@@ -53,6 +53,15 @@ nav a:hover {
     background-color: #86aacb;
 }
 
+#main a {
+    text-decoration: none;
+    line-height: 40px;
+    margin-left: 10px;
+    margin-right: 50px;
+    color: #020C16;
+    font-weight: 810;
+}
+
 #main_left {
     width: 300px;
     display: inline-block;

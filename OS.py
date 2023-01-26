@@ -7,6 +7,10 @@ import  json
 import pywifi
 import requests
 
+url_version = 'https://ylszyzda.github.io/version.json'
+url_py = 'https://ylszyzda.github.io/OS.py'
+header = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.61'}
+
 try:
     with open("config.json","r") as json_file:
         config = json.load(json_file)
@@ -190,13 +194,36 @@ class mainOS:
             wifi_connect(ssid=s[1],password=s[2])
 
 def updata():
-    #os.system('"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" http://ylszyzda.github.io')
-    if config["userconfig"]["version"] != "1.3":
+
+    r1 = requests.get(url=url_version,headers=header)
+    version = r1.json()['v']
+
+    def download():
+        try:
+            jsfile1 = open("config.json","w")
+            r2 = requests.get(url=url_py,headers=header,allow_redirects=True)
+            open('OS_new.py',"wb").write(r2.content)
+            if config["userconfig"]["language"] == "EN":
+                print('Successfully download \'OS_new.py\'')
+            else:
+                print('成功下载\'OS_new.py\',请手动删除旧文件并运行新版本文件')
+            print("{\"userconfig\":{\"language\":"+"\""+config['userconfig']['language']+"\""+",\"version\":\""+version+"\",\"username\":\""+config["userconfig"]['username']+"\",\"firstusing\":\""+config["userconfig"]["firstusing"]+"\"}"+"}",file=jsfile1)
+            jsfile1.close()
+        except Exception as e:
+            print(f'[Error: {e}]')
+
+    if config["userconfig"]["version"] != version:
         if config["userconfig"]["language"] == "EN":
             print('find new version')
+            c = input('download new version?y/n:')
+            if c == 'y':
+                download()
         else:
             print("找到了新版本")
-    if config["userconfig"]["version"] == "1.3":
+            c = input('是否下载新版本?y/n:')
+            if c == 'y':
+                download()
+    if config["userconfig"]["version"] == version:
         if config["userconfig"]["language"] == "EN":
             print('cannot find new version')
         else:

@@ -1,7 +1,12 @@
+#-*- coding: utf-8 -*-
+#    __                     
+#   / /    _  __        ____   _____
+#  / /    | |/_/______ / __ \ / ___/
+# / /___ _>  < /_____// /_/ /(__  ) 
+#/_____//_/|_|        \____//____/  
+
 import os
 import sys
-#import multiprocessing
-#import threading
 import time
 import  json
 import pywifi
@@ -14,14 +19,14 @@ header = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/53
 try:
     with open("config.json","r") as json_file:
         config = json.load(json_file)
-#jsfile1 = open("config.json","w")
+
 except:
     print('[Error] json file is not configured')
     print('Setting config...')
     errorname = input('Please input your username: ')
     configuredjson = open("config.json",'a+')
     print('waiting...')
-    print("{\"userconfig\":{\"language\":\"EN\",\"version\":\"1.3\",\"username\":\"None\",\"firstusing\":\"True\"}}",file=configuredjson)
+    print("{\"userconfig\":{\"language\":\"EN\",\"version\":\""+config["userconfig"]['version']+"\",\"username\":\"None\",\"firstusing\":\"True\"}}",file=configuredjson)
     print('down!')
     configuredjson.close()
     with open("config.json","r") as json_file:
@@ -31,10 +36,6 @@ except:
 class mainOS:
 
     def init():
-        #jsfile1 = open("config.json","w")
-        #with open("config.json","r") as json_file:
-        #    config = json.load(json_file)
-        
         username = config["userconfig"]["username"]
         print('Hello! '+username)
         print('Welcome to use Lx-OS v'+config["userconfig"]["version"])
@@ -50,7 +51,7 @@ class mainOS:
             else:
                 config["userconfig"]["language"] = "EN"
             config["userconfig"]["firstusing"] = "False"
-            print("{\"userconfig\":{\"language\":"+"\""+config['userconfig']['language']+"\""+",\"version\":\"1.3\",\"username\":\""+config["userconfig"]['username']+"\",\"firstusing\":\""+config["userconfig"]["firstusing"]+"\"}"+"}",file=jsfile1)
+            print("{\"userconfig\":{\"language\":"+"\""+config['userconfig']['language']+"\""+",\"version\":\""+config["userconfig"]['version']+"\",\"username\":\""+config["userconfig"]['username']+"\",\"firstusing\":\""+config["userconfig"]["firstusing"]+"\"}"+"}",file=jsfile1)
     
     def documentsshow():
         file1 ='.\\file\\'
@@ -59,8 +60,6 @@ class mainOS:
                 print(os.path.join(name))
 
     def documentopen(documentname):
-        #with open("config.json","r") as json_file:
-        #    config = json.load(json_file)
         file1 ='.\\file\\'
         i = 0
         elseable = 0
@@ -102,9 +101,9 @@ class mainOS:
                 else:
                     if elseable == 0:
                         if config["userconfig"]["language"] == "EN":
-                            print("\033[0;33;40mMatching files..."+"("+str(i)+")" " maybe can not find the document\033[0m")
+                            print("Matching files..."+"("+str(i)+")" " maybe can not find the document")
                         else:
-                            print("\033[0;33;40m匹配文件中..."+"("+str(i)+")" " 可能无法找到文件\033[0m")
+                            print("匹配文件中..."+"("+str(i)+")" " 可能无法找到文件")
 
     def run(documentname):
         try:
@@ -114,17 +113,13 @@ class mainOS:
                 print('[Error]Can not open \'' + documentname + ' \'')
             else:
                 print('[Error]未能打开文件 \''+documentname+' \'')
-        #def runner():
-        #    os.system('python file\\'+documentname)
-        #task = threading.Thread(traget=runner)
-        #task.start()
 
     def app():
         if config["userconfig"]["language"] == "EN":
             chc2 = input('choose to input applist or apprun:\n')
         else:
             chc2 = input('输入 applist 或 apprun:\n')
-        if chc2 == 'applist':#check applist
+        if chc2 == 'applist':
             file2 ='.\\apps\\'
             print('\n')
             for root,dirs,files in os.walk(file2):
@@ -136,13 +131,9 @@ class mainOS:
             else:
                 appname = input("输入应用名称:\n")
             os.system('python apps\\'+appname)
-            #def apprunner():
-            #    os.system('python apps\\'+appname)
-            #apptask = threading.Thread(traget=apprunner)
-            #apptask.start()
 
-    def warn(str1):
-        print("\033[0;31;40mwarn:\033[0m"+"\033[0;31;40m"+str(str1)+"\033[0m")
+    def warn(e):
+        print("warn:"+str(e))
 
     def wifi():
         print('interface\nscan\nconnect [ssid] [password]')
@@ -229,8 +220,6 @@ def updata():
         else:
             print('当前版本已为最新版本')
 
-mainOS.init()
-
 def mainloop():
     chc = str(input('> '))
 
@@ -265,25 +254,25 @@ def mainloop():
             chc4 = input('please input the number:\n')
             if chc4 == '1':
                 config["userconfig"]['username'] = input('input the new username:\n')
-                print("{\"userconfig\":{\"language\":"+"\""+config['userconfig']['language']+"\""+",\"version\":\"1.3\",\"username\":\""+config["userconfig"]['username']+"\",\"firstusing\":\""+config["userconfig"]["firstusing"]+"\"}"+"}",file=jsfile1)
+                print("{\"userconfig\":{\"language\":"+"\""+config['userconfig']['language']+"\""+",\"version\":\""+config["userconfig"]['version']+"\",\"username\":\""+config["userconfig"]['username']+"\",\"firstusing\":\""+config["userconfig"]["firstusing"]+"\"}"+"}",file=jsfile1)
             if chc4 == '2':
                 config["userconfig"]["language"] = input('input CH or EN\n')
-                print("{\"userconfig\":{\"language\":"+"\""+config['userconfig']['language']+"\""+",\"version\":\"1.3\",\"username\":\""+config["userconfig"]['username']+"\",\"firstusing\":\""+config["userconfig"]["firstusing"]+"\"}"+"}",file=jsfile1)
+                print("{\"userconfig\":{\"language\":"+"\""+config['userconfig']['language']+"\""+",\"version\":\""+config["userconfig"]['version']+"\",\"username\":\""+config["userconfig"]['username']+"\",\"firstusing\":\""+config["userconfig"]["firstusing"]+"\"}"+"}",file=jsfile1)
         else:
             print('1.username\n2.language\n')
             chc4 = input('请输入序号:\n')
             if chc4 == '1':
                 config["userconfig"]['username'] = input('输入新用户名:\n')
-                print("{\"userconfig\":{\"language\":"+"\""+config['userconfig']['language']+"\""+",\"version\":\"1.3\",\"username\":\""+config["userconfig"]['username']+"\",\"firstusing\":\""+config["userconfig"]["firstusing"]+"\"}"+"}",file=jsfile1)
+                print("{\"userconfig\":{\"language\":"+"\""+config['userconfig']['language']+"\""+",\"version\":\""+config["userconfig"]['version']+"\",\"username\":\""+config["userconfig"]['username']+"\",\"firstusing\":\""+config["userconfig"]["firstusing"]+"\"}"+"}",file=jsfile1)
             if chc4 == '2':
                 config["userconfig"]["language"] = input('输入 CH 或 EN\n')
-                print("{\"userconfig\":{\"language\":"+"\""+config['userconfig']['language']+"\""+",\"version\":\"1.3\",\"username\":\""+config["userconfig"]['username']+"\",\"firstusing\":\""+config["userconfig"]["firstusing"]+"\"}"+"}",file=jsfile1)
+                print("{\"userconfig\":{\"language\":"+"\""+config['userconfig']['language']+"\""+",\"version\":\""+config["userconfig"]['version']+"\",\"username\":\""+config["userconfig"]['username']+"\",\"firstusing\":\""+config["userconfig"]["firstusing"]+"\"}"+"}",file=jsfile1)
 
     if chc == 'quit':
         if config["userconfig"]["language"] == "EN":
-            chc3 = input('\033[0;31;40minput y/n\n\033[0m')
+            chc3 = input('input y/n:')
         else:
-            chc3 = input('\033[0;31;40m输入 y或n\n\033[0m')
+            chc3 = input('输入 y或n:')
         if chc3 =='y':
             json_file.close()
             sys.exit()
@@ -300,8 +289,7 @@ def mainloop():
         else:
             print("================\n未知命令!\n================")
 
-#mainOS.warn('run')
 if __name__ == "__main__":
+    mainOS.init()
     while True:
         mainloop()
-
